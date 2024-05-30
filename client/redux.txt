@@ -1,0 +1,48 @@
+reducers: la 1 function
+const rootReducer = (state=init, action) => {}
+
+khong dc su dung: sideeffect
+ request toi server
+ math.random() date.now
+
+// action
+chi la 1 object
+const INCREMENT = {
+    typp:
+    payload:
+}
+
+hoac action creator: la function return ra object
+
+//dispatch
+la 1 function: tham so cua no la 1 action
+
+
+// reducer trong redux-toolkit = creaateSlice
+
+filterSlice thay vay filterReducer
+
+consst filterSlice = creaateSlice({
+    name: 'filters'
+    initState: {}
+    reducer: {
+        searchFilterChange: (state, action) => {
+            state.search = action.payload
+
+            thay vi:
+            {
+                ...state,
+                search: action.payload
+            }
+
+        } // => tao ra action creaator
+
+        vd: function searchFilterChange() {
+            return {
+                type: filters/ searchFilterChange 
+            }
+        }
+    }
+})
+
+viet code mutation thay vay immutation

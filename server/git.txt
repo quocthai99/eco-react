@@ -1,0 +1,10 @@
+git
+1. ket noi: git remote add origin https://github.com/quocthai99/e-commerce.git
+    kiem tra xem ket noi chua: git remote -v
+U: untrackedd: chua dc luu vao github
+    - luu: git add . : luu tat ca
+A: Added:  điểm danh những file trong hàng chờ lưu vào local ".git"
+
+2. git commit -m 'commit git': đã thêm vào git local ".git"
+
+3. đẩy code từ .git lên repo: git push origin master: origin trong remove -v master là nhánh mình push lên
