@@ -11,6 +11,7 @@ import {
 } from "redux-persist";
 
 import userSlice from "./user/userSlice";
+import categorySlice from "./category/categorySlice";
 
 const persistConfig = {
   key: "shoptech",
@@ -24,6 +25,7 @@ const userConfig = {
 const store = configureStore({
   reducer: {
     user: persistReducer(userConfig, userSlice),
+    category: categorySlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

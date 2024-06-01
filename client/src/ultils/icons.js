@@ -7,7 +7,7 @@ import {
   AiOutlineMenu,
   AiFillEye
 } from "react-icons/ai";
-import { IoMdMenu } from "react-icons/io";
+import { IoMdMenu, IoIosArrowForward } from "react-icons/io";
 import { BsFillSuitHeartFill } from "react-icons/bs";
 import {
   FaAngleDown,
@@ -21,6 +21,7 @@ import {
 } from "react-icons/fa";
 
 export const icons = {
+  IoIosArrowForward,
   IoMdMenu,
   CiUser,
   CiMoneyBill,

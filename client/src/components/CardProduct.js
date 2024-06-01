@@ -24,7 +24,7 @@ const CardProduct = ({ product }) => {
     >
       <div className="pr-5">
         
-        <div className="h-[400px] p-[15px] border">
+        <div className="p-[15px] border">
           <div className="mb-5 relative">
             <img src={product.thumb} alt="thumb" />
             {isShowOption && <div className="absolute bottom-0 left-[50%] translate-x-[-50%] flex gap-2" >

@@ -2,6 +2,13 @@ import React, { useEffect, useState } from "react";
 
 import { Sidebar, Banner, DealDaily, BestSeller, Feature, SimpleSlider } from "../../components";
 import { apiGetProducts } from "../../services/product";
+import { apiGetCategories } from "../../services/category";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategoriesError, getCategoriesStart, getCategoriesSuccess } from "../../redux/category/categorySlice";
+
+import {icons } from '../../ultils/icons'
+
+const { IoIosArrowForward } = icons
 
 const tabs = [
   {id: 1, name: 'Laptop'},
@@ -10,8 +17,12 @@ const tabs = [
 ]
 
 const Home = () => {
+  const dispatch = useDispatch()
   const [products, setProducts] = useState(null)
   const [activeTab, setActiveTab] = useState(1)
+
+  const { categories } = useSelector(state => state.category.getCategories)
+  console.log(categories)
 
   const fetchProducts = async(name) => {
     const response = await apiGetProducts({category: name || 'laptop'})
@@ -19,9 +30,23 @@ const Home = () => {
       setProducts(response.data.products)
     }
   }
+
+  const fetchCategories = async() => {
+    dispatch(getCategoriesStart())
+    try {
+      const response = await apiGetCategories()
+      dispatch(getCategoriesSuccess(response.categories))
+      
+    } catch (error) {
+      dispatch(getCategoriesError())
+    }
+  }
   useEffect(() => {
     fetchProducts()
+    fetchCategories()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
 
   const handleTabs = (id, name) => {
     setActiveTab(id)
@@ -59,10 +84,46 @@ const Home = () => {
         </header>
 
         <div className='my-10 w-full' >
-                <SimpleSlider 
-                  products={products}
+          <SimpleSlider 
+            products={products}
+          />
+        </div>
+      </div>
+
+      <div className="mb-[30px]" >
+        <header className="mb-5">
+          <h2 className="uppercase py-[15px] border-b-2 border-main font-bold text-xl">
+            hot collections
+          </h2>
+        </header>
+
+        <div className="grid grid-cols-3 gap-5" >
+          {categories?.filter(item => item.brand.length > 0 ).map(cate => (
+            <div className="flex items-center gap-5 border" >
+              <div className="pl-10 pb-5" >
+                <img
+                  src={cate.image}
+                  alt="collections"
                 />
+              </div>
+
+              <div className="flex flex-col p-[15px] gap-[10px] pb-10" >
+                <h2 className="font-semibold uppercase text-sm">{cate.title}</h2>
+                <ul className="text-sm text-gray-500 font-normal" >
+                  {cate.brand.map(el => (
+                    <div className="flex items-center gap-2 cursor-pointer hover:text-main" >
+                      <IoIosArrowForward />
+                      <li>{el}</li>
+                    </div>
+                  ))}
+                </ul>
+              </div>
             </div>
+            ))
+          }
+        </div>
+        
+
       </div>
     </div>
   );
