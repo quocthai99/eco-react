@@ -1,24 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-import { apiGetCategories } from '../services/category'
 import {icons} from '../ultils/icons'
+import { useSelector } from 'react-redux'
 
 
 const { IoMdMenu } = icons
 
 const Sidebar = () => {
-  const [categories, setCategories] = useState([])
-
-  useEffect(() => {
-    const fetchCategories = async() => {
-      const response = await apiGetCategories()
-      if(response.success) {
-        setCategories(response.categories)
-      }
-    }
-    
-    fetchCategories()
-  }, [])
+  const { categories } = useSelector(state => state.category.getCategories)
   
   return (
     <div className='w-1/4 h-[500px] border' >
@@ -28,7 +17,7 @@ const Sidebar = () => {
           <span className='uppercase font-semibold'>all collections</span>
         </div>
         <div className='text-textColor' >
-          {categories.map((cate) => (
+          {categories?.map((cate) => (
             <div key={cate._id} className='px-5 py-4 flex items-center gap-3'>
               <img src={cate.icon} alt='icons' className='w-5 h-5 object-cover' />
               <span className=' hover:text-main cursor-pointer'>

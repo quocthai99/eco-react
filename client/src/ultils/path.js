@@ -10,5 +10,5 @@ export const path = {
     FINAL_REGISTER: 'finalregister/:status',
     RESET_PASSWORD: 'reset-password/:token',
     DETAIL_PRODUCT: 'collections',
-    DETAIL_PRODUCT__CATE__ID: 'collections/:category/:id',
+    DETAIL_PRODUCT__CATE__ID: 'collections/:category/:slug/:id',
 }

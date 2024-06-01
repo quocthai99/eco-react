@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { formatMoney, renderStartFromNumber } from "../ultils/helpers";
 
-import { icons } from "../ultils/icons";
+import { path } from '../ultils/path'
 import { SectionOption } from "../components";
+import { icons } from "../ultils/icons";
 
 const { AiFillEye, AiOutlineMenu, BsFillSuitHeartFill } = icons;
 
@@ -12,6 +13,7 @@ const CardProduct = ({ product }) => {
 
   return (
     <Link
+      to={`${path.DETAIL_PRODUCT}/${product.category.toLowerCase()}/${product.slug}/${product._id}`}
       className="w-full"
       onMouseEnter={e => {
         e.stopPropagation()

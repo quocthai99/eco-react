@@ -18,6 +18,12 @@ import {
   FaGoogle,
   FaPhoneAlt,
   FaShoppingCart,
+  FaShieldAlt,
+  FaTruck,
+  FaGift,
+  FaReply,
+  FaTty,
+  FaChevronLeft
 } from "react-icons/fa";
 
 export const icons = {
@@ -43,4 +49,10 @@ export const icons = {
   AiOutlineMenu,
   AiFillEye,
   BsFillSuitHeartFill,
+  FaShieldAlt,
+  FaTruck,
+  FaGift,
+  FaReply,
+  FaTty,
+  FaChevronLeft
 };

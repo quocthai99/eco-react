@@ -18,7 +18,6 @@ export const createProduct = asyncHandler(async(req, res) => {
 export const getProduct = asyncHandler(async(req, res) => {
     const { pid } = req.params
     if ( !pid ) throw new Error('Missing inputs')
-
     const product = await Product.findById(pid)
     return res.status(200).json({
         success: product ? true : false,

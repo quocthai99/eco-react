@@ -13,3 +13,16 @@ export const apiGetProducts = async(params) => {
         return error
     }
 }
+
+export const apiDetailProduct = async(id) => {
+    try {
+        const response = await axiosConfig({
+            method: 'get',
+            url: `/api/product/${id}`,
+        })
+
+        return response
+    } catch (error) {
+        return error
+    }
+}
