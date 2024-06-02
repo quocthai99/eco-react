@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { apiDetailProduct } from "../../services/product";
 import { formatMoney } from "../../ultils/helpers";
-import { Button, ExtraInfo } from "../../components";
+import { Breadcrumbs, Button, ExtraInfo } from "../../components";
 import { path } from "../../ultils/path";
 
 
@@ -20,17 +20,24 @@ const DetailProduct = () => {
       setProduct(response.data.product);
     }
   };
-  console.log(product);
+  
   useEffect(() => {
     fetchDetailProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleQuantity = () => {
+    console.log('run')
+  }
+
   return (
     <div>
       <div className="w-full bg-[#F7F7F7] min-h-[80px]">
         <div className="max-w-mainWidth m-auto py-[10px]">
-          Breadcrum
+          <div className="mb-[10px] font-bold text-lg" >
+            <span>{product?.title}</span>
+          </div>
+          <Breadcrumbs />
         </div>
       </div>
 
@@ -45,8 +52,9 @@ const DetailProduct = () => {
             />
 
             <div className="flex items-center justify-center gap-[10px]" >
-              {product?.images.slice(0, 3).map(img => (
+              {product?.images.slice(0, 3).map((img, i) => (
                 <img 
+                  key={i}
                   src={img}
                   alt="img" 
                   className="w-[143px] h-[143px] object-contain border p-[10px]"
@@ -73,6 +81,7 @@ const DetailProduct = () => {
                   <div className='flex items-center' >
                     <span className='border-r cursor-pointer border-gray-500 p-2'>-</span>
                     <input
+                        onChange={handleQuantity}
                         value="1"
                         type='text'
                         className='text-center py-2 outline-none w-[50px] text-black '

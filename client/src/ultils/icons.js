@@ -23,7 +23,8 @@ import {
   FaGift,
   FaReply,
   FaTty,
-  FaChevronLeft
+  FaChevronLeft,
+  FaChevronRight
 } from "react-icons/fa";
 
 export const icons = {
@@ -54,5 +55,6 @@ export const icons = {
   FaGift,
   FaReply,
   FaTty,
-  FaChevronLeft
+  FaChevronLeft,
+  FaChevronRight
 };
