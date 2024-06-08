@@ -12,6 +12,7 @@ import {
 
 import userSlice from "./user/userSlice";
 import categorySlice from "./category/categorySlice";
+import appSlice from "./app/appSlice";
 
 const persistConfig = {
   key: "shoptech",
@@ -25,7 +26,8 @@ const userConfig = {
 const store = configureStore({
   reducer: {
     user: persistReducer(userConfig, userSlice),
-    category: categorySlice
+    category: categorySlice,
+    app: appSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

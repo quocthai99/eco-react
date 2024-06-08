@@ -43,8 +43,10 @@ const Login = () => {
       dispatch(loginStart())
       try {
         const response = await apiLogin(data)
+        const accessToken = `Bearer ${response.data.accessToken}`
+        window.localStorage.setItem('accessToken', accessToken)
         dispatch(loginSuccess(response.data))
-        navigate(path.HOME)
+        navigate(`/${path.HOME}`)
       } catch (error) {
         dispatch(loginFailed())
       }

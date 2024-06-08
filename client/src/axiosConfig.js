@@ -9,6 +9,10 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      config.headers['Authorization'] = accessToken;
+    }
     
     return config;
   },
@@ -23,7 +27,9 @@ instance.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
+    // console.log(response)
     // const accessToken = `Bearer ${response.data.accessToken}`
+    // console.log(accessToken)
     // window.localStorage.setItem('accessToken', accessToken)
     
     return response;

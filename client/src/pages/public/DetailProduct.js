@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { apiDetailProduct } from "../../services/product";
+import { useDispatch, useSelector } from "react-redux";
+
+import { apiDetailProduct, apiGetProducts } from "../../services/product";
 import { formatMoney } from "../../ultils/helpers";
-import { Breadcrumbs, Button, ExtraInfo } from "../../components";
+import { Breadcrumbs, Button, Comment, ExtraInfo, SimpleSlider, Vote, Votebar } from "../../components";
 import { path } from "../../ultils/path";
+import { displayVoteSuccess } from "../../redux/app/appSlice";
 
 
 import { icons } from "../../ultils/icons";
 
-const { FaShieldAlt, FaTruck, FaGift, FaReply, FaTty, FaChevronLeft } = icons
+const { FaShieldAlt, FaTruck, FaGift, FaReply, FaTty, FaChevronLeft, AiFillStar } = icons
 
 const DetailProduct = () => {
-  const { id } = useParams();
+  const dispatch = useDispatch()
+  const { id, category } = useParams();
   const [product, setProduct] = useState(null);
+  const [products, setProducts] = useState(null)
+  const [quantity, setQuantity] = useState(null)
+  const { showModal } = useSelector(state => state.app.displayModalVote)
 
   const fetchDetailProduct = async () => {
     const response = await apiDetailProduct(id);
@@ -20,18 +27,48 @@ const DetailProduct = () => {
       setProduct(response.data.product);
     }
   };
+
+  const fetchProducts = async (category) => {
+    const response = await apiGetProducts({category});
+    if (response?.data.success) {
+      setProducts(response.data.products);
+    }
+  };
   
   useEffect(() => {
     fetchDetailProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id, showModal]);
 
-  const handleQuantity = () => {
-    console.log('run')
+  useEffect(() => {
+    fetchProducts(category)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category])
+
+  const handleQuantity = (key) => {
+    if (key === 'minus') {
+      setQuantity(quantity - 1)
+      if (quantity < 1 ) {
+        setQuantity(1)
+      }
+      
+    }
+    if ( key === 'plus') {
+      setQuantity(quantity + 1)
+    }
+  }
+
+  const handleAddToCart = () => {
+    console.log(quantity)
+  }
+
+  const handleShowModal = () => {
+    dispatch(displayVoteSuccess({showModal: true, modalChildren: <Vote pid={id} />}))
   }
 
   return (
     <div>
+    {/* Breadcrum */}
       <div className="w-full bg-[#F7F7F7] min-h-[80px]">
         <div className="max-w-mainWidth m-auto py-[10px]">
           <div className="mb-[10px] font-bold text-lg" >
@@ -41,6 +78,7 @@ const DetailProduct = () => {
         </div>
       </div>
 
+      {/* Detail */}
       <div className="max-w-mainWidth m-auto mt-5">
 
         <div className="flex gap-10 mb-[30px]" >
@@ -79,18 +117,18 @@ const DetailProduct = () => {
                 <div className="flex items-center gap-4 my-4" >
                   <span className="font-semibold">Quantity</span>
                   <div className='flex items-center' >
-                    <span className='border-r cursor-pointer border-gray-500 p-2'>-</span>
+                    <span onClick={() => handleQuantity('minus')} className='border-r cursor-pointer border-gray-500 p-2'>-</span>
                     <input
-                        onChange={handleQuantity}
-                        value="1"
+                        onChange={e => e.target.value}
+                        value={quantity || 1}
                         type='text'
                         className='text-center py-2 outline-none w-[50px] text-black '
                     />
-                    <span className='border-l cursor-pointer border-gray-500 p-2'>+</span>
+                    <span onClick={() => handleQuantity('plus')} className='border-l cursor-pointer border-gray-500 p-2'>+</span>
                   </div>
                 </div>
 
-                <Button title="ADD TO CART"/>
+                <Button onClick={handleAddToCart} title="ADD TO CART"/>
               </div>
 
             </div>
@@ -109,11 +147,77 @@ const DetailProduct = () => {
 
         </div>
       </div>
-
-      <Link to={path.HOME} className="flex items-center justify-center text-[#505050] hover:text-main mb-[30px]" >
+      
+      {/* Back to home */}
+      <Link to={`/${path.HOME}`} className="flex items-center justify-center text-[#505050] hover:text-main mb-[30px]" >
         <FaChevronLeft />
         <span className="text-sm">BACK TO COLLECTION - FULL WIDTH</span>
       </Link>
+
+      {/* Vote */}
+      <div className="max-w-mainWidth m-auto mt-5">
+          <div className="p-5 border">
+            <h2 className="font-bold mb-5">Đánh giá & nhận xé</h2>
+            
+            <div className="grid grid-cols-5 pb-10 mb-5 border-b">
+
+              <div className="col-span-2">
+                <div className="py-10">
+                  <div className="text-center text-2xl font-bold mb-2">{`${product?.totalRatings}/5`}</div>
+                  <div className="flex justify-center gap-2">
+                    {Array.from(Array(5).keys().map(item => (
+                      <AiFillStar key={item} color="orange" />
+                    )))}
+                  </div>
+                  <div className="text-center underline text-blue-500 mt-2">{`${product?.ratings.length} đánh giá`}</div>
+                </div>
+              </div>
+
+              <div className="border-l pl-10 col-span-3">
+                <div className="pb-10">
+                    {Array.from(Array(5).keys()).reverse().map(el => (
+                      <Votebar 
+                        key={el}
+                        star={el + 1}
+                        totalRatings={product?.ratings.length}
+                        totalCount={product?.ratings.filter((i) => i.star === el + 1)?.length}
+                      />
+                    ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="pb-10 mb-5 border-b">
+              <div className="text-center flex flex-col gap-5">
+                <div className=" text-gray-700">Bạn đánh giá sao về sản phẩm này?</div>
+                <div className="flex items-center justify-center">
+                  <Button
+                    title="Rating now"
+                    cusWidth="max-w-[170px]"
+                    onClick={handleShowModal}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              {product?.ratings.map(el => (
+                <Comment key={el._id} star={el.star} comment={el.comment} />
+              ))}
+            </div>
+            
+          </div>
+      </div>
+
+      {/* Slide */}
+      <div className="max-w-mainWidth m-auto my-5 ">
+        <h2 className="uppercase py-[15px] font-bold text-xl border-b-2 border-main mb-10">
+          OTHER CUSTOMERS ALSO BUY:
+        </h2>
+        <SimpleSlider 
+          products={products}
+        />
+      </div>
     </div>
   );
 };

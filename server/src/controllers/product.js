@@ -36,6 +36,7 @@ export const getProducts = asyncHandler(async(req, res) => {
     
     if ( queryObj.title ) query.title = { $regex: query.title, $options: 'i' }
     if ( queryObj.category ) query.category = { $regex: query.category, $options: 'i' }
+    if ( queryObj.color ) query.color = { $regex: query.color, $options: 'i' }
 
     let queries = Product.find(query)
     
@@ -89,17 +90,30 @@ export const  deleteProduct = asyncHandler(async(req, res) => {
 export const ratings = asyncHandler(async(req, res) => {
     const { _id } = req.user
     const { star, comment, pid } = req.body
+    
     if ( !star || !pid ) throw new Error('Missing inputs')
     const product = await Product.findById(pid)
     const userRating = product.ratings.find(user => user.postedBy.toString() === _id )
-    console.log(userRating)
     if ( userRating ) {
         // user da danh gia: update rating
-        const response = await Product.updateOne({ratings: { $elemMatch: userRating }}, { $set: { "ratings.$.star": star, "ratings.$.comment": comment } }, { new: true })
+        await Product.updateOne({ratings: { $elemMatch: userRating }}, { $set: { "ratings.$.star": star, "ratings.$.comment": comment } }, { new: true })
     } else {
         // user chua danh gia: add rating
         await Product.findByIdAndUpdate(pid, { $push: { ratings: { star, postedBy: _id, comment } }}, { new: true })
     }
+
+    const updatedProduct = await Product.findById(pid)
+    const ratingCount = updatedProduct.ratings.length
+    const sumRatings = updatedProduct.ratings.reduce((sum, el) => sum + el.star, 0  )
+    
+    updatedProduct.totalRatings = sumRatings / ratingCount
+
+    await updatedProduct.save()
+
+    return res.status(200).json({
+        success: true,
+        updatedProduct
+    })
 })
 
 // find() tat ca product

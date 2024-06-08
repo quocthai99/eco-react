@@ -4,15 +4,15 @@ import { formatMoney, renderStartFromNumber } from "../ultils/helpers";
 
 import { SectionOption } from "../components";
 import { icons } from "../ultils/icons";
+import { path } from "../ultils/path";
 
 const { AiFillEye, AiOutlineMenu, BsFillSuitHeartFill } = icons;
 
-const CardProduct = ({ product }) => {
+const CardProduct = ({ product, noPadding }) => {
   const [isShowOption, setIsShowOption] = useState(false)
-
   return (
     <Link
-      to={`${product.category.toLowerCase()}/${product.title}/${product._id}`}
+      to={`/${path.PRODUCTS}/${product.category.toLowerCase()}/${product.title}/${product._id}`}
       className="w-full"
       onMouseEnter={e => {
         e.stopPropagation()
@@ -23,7 +23,7 @@ const CardProduct = ({ product }) => {
         setIsShowOption(false)
       }}
     >
-      <div className="pr-5">
+      <div className={`${noPadding ? '' : 'pr-5'}`}>
         
         <div className="p-[15px] border">
           <div className="mb-5 relative">

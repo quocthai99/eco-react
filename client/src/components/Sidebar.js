@@ -2,6 +2,9 @@ import React from 'react'
 
 import {icons} from '../ultils/icons'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+
+import { path } from '../ultils/path'
 
 
 const { IoMdMenu } = icons
@@ -18,12 +21,12 @@ const Sidebar = () => {
         </div>
         <div className='text-textColor' >
           {categories?.map((cate) => (
-            <div key={cate._id} className='px-5 py-4 flex items-center gap-3'>
+            <Link to={`${path.PRODUCTS}/${cate.title.toLowerCase()}`} key={cate._id} className='px-5 py-4 flex items-center gap-3'>
               <img src={cate.icon} alt='icons' className='w-5 h-5 object-cover' />
               <span className=' hover:text-main cursor-pointer'>
                 {cate.title}
               </span>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

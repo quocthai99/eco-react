@@ -26,3 +26,17 @@ export const apiDetailProduct = async(id) => {
         return error
     }
 }
+
+export const apiRatingProduct = async(body) => {
+    try {
+        const response = await axiosConfig({
+            method: 'put',
+            url: '/api/product/ratings',
+            data: body
+        })
+
+        return response
+    } catch (error) {
+        return error
+    }
+}
