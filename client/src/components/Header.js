@@ -1,24 +1,45 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { icons } from '../ultils/icons'
 import logo from '../assets/logo.png'
+import { getCurrentFaild, getCurrentStart, getCurrentSuccess } from '../redux/user/userSlice'
 import { logoutFailed, logoutStart, logoutSuccess } from '../redux/user/userSlice'
-import { apiLogout } from '../services/user'
+import { apiGetCurrent } from '../services/user'
+import { apiLogout } from '../services/auth'
 
 
-const { AiOutlineLogout, CiMoneyBill, FaAngleDown, FaPinterest, FaFacebookF, FaTwitter, FaInstagram, FaGoogle, FaPhoneAlt, FaShoppingCart, MdEmail, CiHeart } = icons
+import { icons } from '../ultils/icons'
+import { path } from '../ultils/path'
+
+const { AiOutlineLogout, CiMoneyBill, FaAngleDown, FaPinterest, FaFacebookF, FaTwitter, FaInstagram, FaGoogle, FaPhoneAlt, FaShoppingCart, MdEmail, CiHeart, AiOutlineUser } = icons
 
 const Header = () => {
     const dispatch = useDispatch()
-    const { currentUser } = useSelector(state => state.user.login)
+    const { user } = useSelector(state => state.user.getCurrent)
+    
+    const fetchGetCurrent = async() => {
+        const response = await apiGetCurrent()
+        dispatch(getCurrentStart())
+        if ( response?.data?.success) {
+            try {
+                dispatch(getCurrentSuccess(response.data.user))
+            } catch (error) {
+                dispatch(getCurrentFaild())
+            }
+        }
+    }
+    useEffect(() => {
+        fetchGetCurrent()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     
     const handleLogout = async () => {
         
         try {
             dispatch(logoutStart())
             await apiLogout()
+            localStorage.removeItem('accessToken');
             dispatch(logoutSuccess())
         } catch (error) {
             dispatch(logoutFailed())
@@ -39,12 +60,17 @@ const Header = () => {
                             </div>
                         </div>
                     </div>
-                    {currentUser 
-                        ? <div className='flex items-center gap-4' >
+                    {user 
+                        ? <div className='flex items-center gap-5' >
                             <span>Wellcome</span>
-                            <div className='flex items-center gap-1' >
-                                <span>{currentUser.firstname}</span>
-                                <span>{currentUser.lastname}</span>
+                            <div className='flex items-center gap-5' >
+                                <div className='flex items-center gap-1'>
+                                    <span>{user.firstname}</span>
+                                    <span>{user.lastname}</span>
+                                </div>
+                                <Link to={user?.role === 'admin' ? `/${path.ADMIN}/${path.DASHBOARD}` : `/${path.MEMBER}/${path.PERSONAL}`}>
+                                    <AiOutlineUser size={20} />
+                                </Link>
                                 <span onClick={handleLogout} >
                                     <AiOutlineLogout size={20} />
                                 </span>
@@ -73,6 +99,7 @@ const Header = () => {
 
                 </div>
             </div>
+
             <div className='header__bottom py-9'>
                 <div className='max-w-mainWidth m-auto flex items-center justify-between '>
                     <div className='w-1/4' >

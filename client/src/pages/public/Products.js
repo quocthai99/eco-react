@@ -3,7 +3,7 @@ import Breadcrumbs from "../../components/Breadcrumbs";
 import { apiGetProducts } from "../../services/product";
 import { useParams } from "react-router-dom";
 
-import { CardProduct, SelectProduct } from '../../components'
+import { CardProduct, Pagination, SelectProduct } from '../../components'
 
 import { icons } from "../../ultils/icons";
 import { colors } from "../../ultils/constant";
@@ -108,7 +108,9 @@ const Products = () => {
             ))}
           </div>
 
-          <div className="text-center pt-10">Pagination</div>
+          <div className="text-center pt-10">
+            <Pagination />
+          </div>
         </div>
       </div>
     </div>

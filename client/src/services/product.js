@@ -1,10 +1,11 @@
+import axios from "axios"
 import axiosConfig from '../axiosConfig'
 
 export const apiGetProducts = async(params) => {
     try {
-        const response = await axiosConfig({
+        const response = await axios({
             method: 'get',
-            url: '/api/product/',
+            url: `${process.env.REACT_APP_SERVER_URL}api/product/`,
             params
         })
 
@@ -16,9 +17,9 @@ export const apiGetProducts = async(params) => {
 
 export const apiDetailProduct = async(id) => {
     try {
-        const response = await axiosConfig({
+        const response = await axios({
             method: 'get',
-            url: `/api/product/${id}`,
+            url: `${process.env.REACT_APP_SERVER_URL}api/product/${id}`,
         })
 
         return response

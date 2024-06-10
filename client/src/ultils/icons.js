@@ -1,11 +1,13 @@
 import { CiMoneyBill, CiHeart, CiUser } from "react-icons/ci";
-import { MdEmail, MdNavigateNext, MdNavigateBefore } from "react-icons/md";
+import { MdEmail, MdNavigateNext, MdNavigateBefore, MdGroup } from "react-icons/md";
 import {
   AiOutlineLogout,
   AiFillStar,
   AiOutlineStar,
   AiOutlineMenu,
-  AiFillEye
+  AiFillEye,
+  AiOutlineUser,
+  AiOutlineDashboard,
 } from "react-icons/ai";
 import { IoMdMenu, IoIosArrowForward,IoIosArrowDown } from "react-icons/io";
 import { BsFillSuitHeartFill } from "react-icons/bs";
@@ -28,6 +30,7 @@ import {
 } from "react-icons/fa";
 
 export const icons = {
+  MdGroup,
   IoIosArrowForward,
   IoMdMenu,
   CiUser,
@@ -57,5 +60,7 @@ export const icons = {
   FaTty,
   FaChevronLeft,
   FaChevronRight,
-  IoIosArrowDown
+  IoIosArrowDown,
+  AiOutlineUser,
+  AiOutlineDashboard
 };

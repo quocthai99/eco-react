@@ -5,8 +5,8 @@ import { toast } from 'react-toastify'
 
 import bgLogo from '../../assets/bg-login.jpg'
 import { Button, Input } from '../../components'
-import { apiFinalRegister, apiForgotPassword, apiLogin, apiRegister } from'../../services/user'
-import { registerStart, registerSuccess, registerFailed, loginStart, loginSuccess, loginFailed } from '../../redux/user/userSlice'
+import { apiFinalRegister, apiForgotPassword, apiLogin, apiRegister } from'../../services/auth'
+import { registerStart, registerSuccess, registerFailed, loginStart, loginSuccess, loginFailed } from '../../redux/auth/authSlice'
 import { path } from '../../ultils/path'
 
 const Login = () => {
@@ -43,8 +43,8 @@ const Login = () => {
       dispatch(loginStart())
       try {
         const response = await apiLogin(data)
-        const accessToken = `Bearer ${response.data.accessToken}`
-        window.localStorage.setItem('accessToken', accessToken)
+        // const accessToken = `Bearer ${response.data.accessToken}`
+        // window.localStorage.setItem('accessToken', accessToken)
         dispatch(loginSuccess(response.data))
         navigate(`/${path.HOME}`)
       } catch (error) {

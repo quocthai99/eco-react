@@ -1,16 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    register: {
+    getCurrent: {
         isFetching: false,
-        error: false,
-        mes: '',
-    },
-    login: {
-        isFetching: false,
-        currentUser: null,
-        error: false,
-        success: false
+        success: false,
+        user: null,
+        error: false
     },
     logout: {
         isFetching: false,
@@ -22,36 +17,28 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        registerStart: (state) => {
-            state.register.isFetching = true
+        getCurrentStart: (state) => {
+            state.getCurrent.isFetching = true
         },
-        registerSuccess: (state, action) => {
-            state.register.isFetching = false
-            state.register.mes = action.payload.mes
+        getCurrentSuccess: (state, action) => {
+            state.getCurrent.isFetching = false
+            state.getCurrent.user = action.payload
+            state.getCurrent.success = true
+            state.getCurrent.error = false
         },
-        registerFailed: (state) => {
-            state.register.isFetching = false
-            state.register.error = true
-        },
-        loginStart: (state) => {
-            state.login.isFetching = true
-        },
-        loginSuccess: (state, action) => {
-            state.login.isFetching = false
-            state.login.success = true
-            state.login.currentUser = action.payload.userData
-        },
-        loginFailed: (state) => {
-            state.login.isFetching = false
-            state.login.error = true
+        getCurrentFaild: (state) => {
+            state.getCurrent.isFetching = false
+            state.getCurrent.user = null
+            state.getCurrent.success = false
+            state.getCurrent.error = true
         },
         logoutStart: (state) => {
             state.logout.isFetching = true
         },
         logoutSuccess: (state) => {
             state.logout.isFetching = false
-            state.login.success = false
-            state.login.currentUser = null
+            state.getCurrent.user = null
+            state.getCurrent.success = false
         },
         logoutFailed: (state) => {
             state.logout.isFetching = false
@@ -60,5 +47,5 @@ const userSlice = createSlice({
     }
 })
 
-export const { logoutStart, logoutSuccess, logoutFailed, registerStart, registerSuccess, registerFailed, loginStart, loginSuccess, loginFailed } = userSlice.actions
+export const { logoutStart, logoutSuccess, logoutFailed, getCurrentStart, getCurrentSuccess, getCurrentFaild } = userSlice.actions
 export default userSlice.reducer

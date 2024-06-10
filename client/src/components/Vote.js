@@ -19,11 +19,12 @@ const Vote = ({pid}) => {
   const dispatch = useDispatch()
   const [activeStar, setActiveStar] = useState(null)
   const [comment, setComment] = useState('')
-  const { success } = useSelector(state => state.user.login)
-  
+  const { user } = useSelector(state => state.user.getCurrent)
+  console.log(user)
   const handleVoteProduct = async () => {
-    if (success) {
+    if (user) {
       const response = await apiRatingProduct({ comment, star: activeStar, pid })
+      console.log(response)
       if(response.data.success) {
         dispatch(displayVoteSuccess({showModal: false, modalChildren: null }))
       }

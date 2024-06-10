@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import { Button } from '../../components'
-import { apiResetPassword } from '../../services/user'
+import { apiResetPassword } from '../../services/auth'
 import { path } from '../../ultils/path'
 
 const ResetPassword = () => {
