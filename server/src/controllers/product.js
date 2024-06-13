@@ -33,11 +33,11 @@ export const getProducts = asyncHandler(async(req, res) => {
     let queryString = JSON.stringify(queryObj)
     queryString = queryString.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
     const query = JSON.parse(queryString)
-    
-    if ( queryObj.title ) query.title = { $regex: query.title, $options: 'i' }
+    console.log(query)
+    if ( queryObj.title ) query.title = { $regex: query.title, $options: 'i' } // { '$regex': 'iphone', '$options': 'i' }
     if ( queryObj.category ) query.category = { $regex: query.category, $options: 'i' }
     if ( queryObj.color ) query.color = { $regex: query.color, $options: 'i' }
-
+    
     let queries = Product.find(query)
     
     if ( req.query.sort ) {
@@ -49,7 +49,7 @@ export const getProducts = asyncHandler(async(req, res) => {
         const fieldsBy = req.query.fields.split(',').join(' ')
         queries = queries.select(fieldsBy)
     }
-
+    
     const page = req.query.page * 1 || 1
     const limit = req.query.limit * 1 || 10
     const skip = (page - 1) * limit
@@ -57,9 +57,10 @@ export const getProducts = asyncHandler(async(req, res) => {
     queries = queries.skip(skip).limit(limit)
 
     const products = await queries
+    const counts = await Product.find(query).countDocuments()
     return res.status(200).json({
         success: products ? true : false,
-        counts: products.length,
+        counts,
         products: products ? products : 'Cannot get products',
     })
 })

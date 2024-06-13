@@ -44,3 +44,16 @@ export const apiGetCurrent = async() => {
         return error
     }
 } 
+
+export const apiGetUsers = async(params) => {
+    try {
+        const response = await axiosConfig({
+            method: 'get',
+            url: '/api/user',
+            params
+        })
+        return response
+    } catch (error) {
+        return error
+    }
+} 

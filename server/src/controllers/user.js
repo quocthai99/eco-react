@@ -186,11 +186,54 @@ export const resetPassword = asyncHandler(async(req, res) => {
 })
 
 export const getUsers = asyncHandler(async(req, res) => {
-    const response = await User.find().select('-password -refreshToken')
+    const queryObj = { ...req.query }
+    const excludedFields = ['page', 'limit', 'fields', 'sort']
+    excludedFields.forEach(el => delete queryObj[el])
+
+    let queryString = JSON.stringify(queryObj)
+    queryString = queryString.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
+    const query = JSON.parse(queryString)
+    
+    if (queryObj.q) {
+        delete query.q
+        query['$or'] = [
+                {firstname: { $regex: queryObj.q, $options: 'i' }},
+                {lastname: { $regex: queryObj.q, $options: 'i' }},
+                {email: { $regex: queryObj.q, $options: 'i' }},
+            ]
+        
+    }
+    
+    let queries = User.find(query)
+    
+    if ( req.query.sort ) {
+        const sortBy = req.query.sort.split(',').join(' ')
+        queries = queries.sort(sortBy)
+    }
+
+    if ( req.query.fields ) {
+        const fieldsBy = req.query.fields.split(',').join(' ')
+        queries = queries.select(fieldsBy)
+    }
+
+    const page = req.query.page * 1 || 1
+    const limit = req.query.limit * 1 || 10
+    const skip = (page - 1) * limit
+
+    queries = queries.skip(skip).limit(limit)
+
+    const users = await queries
     return res.status(200).json({
-        success: response ? true : false,
-        users: response
+        success: users ? true : false,
+        counts: users.length,
+        users: users ? users : 'Cannot get users',
     })
+
+    // const response = await User.find().select('-password -refreshToken')
+    // return res.status(200).json({
+    //     success: response ? true : false,
+    //     users: response
+    // })
 })
 
 export const deleteUser = asyncHandler(async(req, res) => {
