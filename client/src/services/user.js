@@ -57,3 +57,28 @@ export const apiGetUsers = async(params) => {
         return error
     }
 } 
+
+export const apiUpdateUser = async(data, id) => {
+    try {
+        const response = await axiosConfig({
+            method: 'put',
+            url: `/api/user/${id}`,
+            data
+        })
+        return response
+    } catch (error) {
+        return error
+    }
+} 
+
+export const apiDeleteUser = async(uid) => {
+    try {
+        const response = await axiosConfig({
+            method: 'delete',
+            url: `/api/user/${uid}`,
+        })
+        return response
+    } catch (error) {
+        return error
+    }
+} 

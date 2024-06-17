@@ -34,7 +34,7 @@ const Pagination = ({
 
   return <div>
     <div className="flex justify-center items-center gap-5">
-      <div onClick={onPrev} className={`${currentPage === 1 && 'hidden'} cursor-pointer`}>{'<<'}</div>
+      <div onClick={onPrev} className={`${currentPage === 1 || currentPage === undefined && 'hidden'} cursor-pointer`}>{'<<'}</div>
       {paginationRange?.map((page, i) => {
         return (
           <div
@@ -46,7 +46,7 @@ const Pagination = ({
           </div>
         )
       })}
-      <div onClick={onNext} className={`${currentPage >= paginationRange.length ? 'hidden' : "cursor-pointer"}`}>{'>>'}</div>
+      <div onClick={onNext} className={`${currentPage >= paginationRange?.length || currentPage === undefined ? 'hidden' : "cursor-pointer"}`}>{'>>'}</div>
     </div>
   </div>;
 };

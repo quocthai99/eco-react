@@ -16,12 +16,12 @@ const AdminLayout = () => {
   }
 
   return (
-    <div className='flex w-full min-h-screen bg-sky-900 text-white'>
-      <div className='w-[327px] flex-none'>
+    <div className='w-full min-h-screen bg-sky-900 text-white'>
+      <div className='w-[300px] absolute top-0 left-0 bottom-0'>
         <Sidebar />
       </div>
 
-      <div className='flex-auto'>
+      <div className='ml-[327px]'>
         <Outlet />
       </div>
     </div>

@@ -8,9 +8,8 @@ const usePagination = (
   siblingCount,
 ) => {
   const paginationRange = useMemo(() => {
-    console.log(totalCount / pageSize)
-    const totalPageCount = Math.ceil(totalCount / pageSize) // tong so trang
-    console.log({currentPage, totalPageCount, totalCount, pageSize})
+    
+    const totalPageCount = Math.ceil(totalCount / pageSize) 
 
     const totalPageNumber = siblingCount + 5 // tong so trang toi thieu hien thi
 

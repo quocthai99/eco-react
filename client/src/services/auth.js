@@ -5,7 +5,7 @@ export const apiRegister = async(payload) => {
     try {
         const response = await axios({
             method: 'post',
-            url: '/api/user/register',
+            url: `${process.env.REACT_APP_SERVER_URL}api/user/register`,
             data: payload,
             withCredentials: true
         })
@@ -20,7 +20,7 @@ export const apiFinalRegister = async(token) => {
     try {
         const response = await axios({
             method: 'put',
-            url: `/api/user/finalregister/${token}`
+            url: `${process.env.REACT_APP_SERVER_URL}api/user/finalregister/${token}`
         })
 
         return response

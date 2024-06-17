@@ -14,7 +14,7 @@ router.get('/logout', userControllers.logout)
 router.post('/forgotpassword', userControllers.forgotPassword)
 router.post('/resetpassword', userControllers.resetPassword)
 router.get('/',verifyAccessToken, isAdmin, userControllers.getUsers)
-router.delete('/',verifyAccessToken, isAdmin, userControllers.deleteUser)
+router.delete('/:uid',verifyAccessToken, isAdmin, userControllers.deleteUser)
 router.put('/:uid',verifyAccessToken, isAdmin, userControllers.updateUserByAdmin)
 router.put('/current',verifyAccessToken, userControllers.updateUser)
 

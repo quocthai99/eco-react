@@ -237,9 +237,10 @@ export const getUsers = asyncHandler(async(req, res) => {
 })
 
 export const deleteUser = asyncHandler(async(req, res) => {
-    const { _id } = req.query
-    if ( !_id ) throw new Error('Missing input')
-    const response = await User.findByIdAndDelete(_id)
+    const { uid } = req.params
+    console.log(uid)
+    if ( !uid ) throw new Error('Missing input')
+    const response = await User.findByIdAndDelete(uid)
     return res.status(200).json({
         success: response ? true : false,
         deletedUser: response ? `User with email ${response.email}` : 'No delete user'

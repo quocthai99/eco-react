@@ -45,7 +45,7 @@ instance.interceptors.response.use(
       // Xóa accessToken khỏi localStorage khi nhận được lỗi 401
       localStorage.removeItem('accessToken');
       // Có thể thêm logic chuyển hướng đến trang đăng nhập tại đây nếu cần
-      // window.location.href = '/login'; 
+      window.location.href = '/login'; 
   }
     return Promise.reject(error);
   }
