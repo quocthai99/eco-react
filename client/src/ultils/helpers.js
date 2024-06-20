@@ -52,3 +52,11 @@ export const range = (start, end) => {
 
     return Array.from({length}, (_, i) => i + start)
 }
+
+export const toBase64 = file => new Promise((resolve, reject) => {
+    if(!file) return
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+});

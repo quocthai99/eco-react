@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Sidebar, Banner, DealDaily, BestSeller, Feature, SimpleSlider } from "../../components";
 import { apiGetProducts } from "../../services/product";
-import { apiGetCategories } from "../../services/category";
-import { useDispatch, useSelector } from "react-redux";
-import { getCategoriesError, getCategoriesStart, getCategoriesSuccess } from "../../redux/category/categorySlice";
+import { useSelector } from "react-redux";
 
 import {icons } from '../../ultils/icons'
 
@@ -17,7 +15,6 @@ const tabs = [
 ]
 
 const Home = () => {
-  const dispatch = useDispatch()
   const [products, setProducts] = useState(null)
   const [activeTab, setActiveTab] = useState(1)
 
@@ -30,23 +27,8 @@ const Home = () => {
     }
 }
 
-  const fetchCategories = async() => {
-    dispatch(getCategoriesStart())
-    try {
-      const response = await apiGetCategories()
-      dispatch(getCategoriesSuccess(response.categories))
-      
-    } catch (error) {
-      dispatch(getCategoriesError())
-    }
-  }
   useEffect(() => {
     fetchProducts()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    fetchCategories()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

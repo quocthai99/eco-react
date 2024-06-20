@@ -5,13 +5,17 @@ const Product = require('../models/product')
 
 
 export const createProduct = asyncHandler(async(req, res) => {
-    if ( Object.keys(req.body).length === 0 ) throw new Error('Missing input')
-    if ( req.body && req.body.title ) req.body.slug = slugify(req.body.title)
-    
+    const { title, price, description, brand, category, color} = req.body
+    const thumb = req.files.thumb[0].path
+    const images = req.files.images.map(el => el.path)
+    if (!title && !price && !description && !brand && !category && !color ) throw new Error('Missing input')
+    req.body.slug = slugify(title)
+    if(thumb) req.body.thumb = thumb
+    if(images) req.body.images = images
     const newProduct = await Product.create(req.body)
     return res.status(200).json({
         success: newProduct ? true : false,
-        createProduct: newProduct ? newProduct : 'Cannot create new product'
+        mes: newProduct ? 'created' : 'Cannot create new product'
     })
 })
 
@@ -33,7 +37,7 @@ export const getProducts = asyncHandler(async(req, res) => {
     let queryString = JSON.stringify(queryObj)
     queryString = queryString.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
     const query = JSON.parse(queryString)
-    console.log(query)
+    
     if ( queryObj.title ) query.title = { $regex: query.title, $options: 'i' } // { '$regex': 'iphone', '$options': 'i' }
     if ( queryObj.category ) query.category = { $regex: query.category, $options: 'i' }
     if ( queryObj.color ) query.color = { $regex: query.color, $options: 'i' }

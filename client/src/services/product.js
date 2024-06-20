@@ -41,3 +41,17 @@ export const apiRatingProduct = async(body) => {
         return error
     }
 }
+
+export const apiCreateProduct = async(data) => {
+    try {
+        const response = await axiosConfig({
+            method: 'post',
+            url: '/api/product/',
+            data
+        })
+
+        return response
+    } catch (error) {
+        return error
+    }
+}

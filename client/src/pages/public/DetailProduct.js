@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import DOMPurify from 'dompurify';
 
 import { apiDetailProduct, apiGetProducts } from "../../services/product";
 import { formatMoney } from "../../ultils/helpers";
@@ -109,9 +110,8 @@ const DetailProduct = () => {
               <div className="w-full">
                 
                 <ul className="flex flex-col gap-1 text-[#505050]">
-                  {product?.description.map((el, i) => (
-                    <li key={i}>{el}</li>
-                  ))}
+                  {product?.description.length > 1 && product?.description.map((el, i) =>  <li key={i}>{el}</li> )}
+                  {product?.description.length === 1 && <div className="line-clamp-[10]" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(product?.description[0])}} ></div>}
                 </ul>
 
                 <div className="flex items-center gap-4 my-4" >
