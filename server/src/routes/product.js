@@ -14,6 +14,9 @@ router.get('/:pid',  productControllers.getProduct)
 router.get('/',  productControllers.getProducts)
 router.delete('/:pid', verifyAccessToken, isAdmin,  productControllers.deleteProduct)
 router.put('/ratings', verifyAccessToken, productControllers.ratings)
-router.put('/:pid', verifyAccessToken, isAdmin, productControllers.updateProduct)
+router.put('/:pid', verifyAccessToken, isAdmin, uploader.fields([
+    {name: 'images', maxCount: 10},
+    {name: 'thumb', maxCount: 1}
+]), productControllers.updateProduct)
 
 export default router

@@ -55,3 +55,30 @@ export const apiCreateProduct = async(data) => {
         return error
     }
 }
+
+export const apiDeleteProduct = async(pid) => {
+    try {
+        const response = await axiosConfig({
+            method: 'delete',
+            url: `/api/product/${pid}`,
+        })
+
+        return response
+    } catch (error) {
+        return error
+    }
+}
+
+export const apiUpdateProduct = async(data, pid) => {
+    try {
+        const response = await axiosConfig({
+            method: 'put',
+            url: `/api/product/${pid}`,
+            data
+        })
+
+        return response
+    } catch (error) {
+        return error
+    }
+}

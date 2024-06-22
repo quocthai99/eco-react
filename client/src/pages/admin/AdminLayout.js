@@ -21,7 +21,7 @@ const AdminLayout = () => {
         <Sidebar />
       </div>
 
-      <div className='ml-[327px]'>
+      <div className='ml-[300px]'>
         <Outlet />
       </div>
     </div>

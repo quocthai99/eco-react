@@ -33,7 +33,7 @@ export const getProducts = asyncHandler(async(req, res) => {
     const queryObj = { ...req.query }
     const excludedFields = ['page', 'limit', 'fields', 'sort']
     excludedFields.forEach(el => delete queryObj[el])
-
+    
     let queryString = JSON.stringify(queryObj)
     queryString = queryString.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
     const query = JSON.parse(queryString)
@@ -41,6 +41,15 @@ export const getProducts = asyncHandler(async(req, res) => {
     if ( queryObj.title ) query.title = { $regex: query.title, $options: 'i' } // { '$regex': 'iphone', '$options': 'i' }
     if ( queryObj.category ) query.category = { $regex: query.category, $options: 'i' }
     if ( queryObj.color ) query.color = { $regex: query.color, $options: 'i' }
+    if  (queryObj.queryFields) {
+        delete query.queryFields
+        query['$or'] = [
+                {title: { $regex: queryObj.queryFields, $options: 'i' }},
+                {brand: { $regex: queryObj.queryFields, $options: 'i' }},
+                {category: { $regex: queryObj.queryFields, $options: 'i' }},
+                {color: { $regex: queryObj.queryFields, $options: 'i' }},
+            ]
+    }
     
     let queries = Product.find(query)
     
@@ -71,13 +80,16 @@ export const getProducts = asyncHandler(async(req, res) => {
 
 export const updateProduct = asyncHandler(async(req, res) => {
     const { pid } = req.params
-    if ( !pid || Object.keys(req.body).length === 0) throw new Error('Missing input')
+    const thumb = req.files.thumb[0].path
+    const images = req.files.images.map(img => img.path)
     if ( req.body && req.body.title ) req.body.slug = slugify(req.body.title)
+    if(thumb) req.body.thumb = thumb
+    if(images) req.body.images = images
     
     const updatedProduct = await Product.findByIdAndUpdate(pid, req.body, {new: true})
     return res.status(200).json({
         success: updatedProduct ? true : false,
-        updatedProduct: updatedProduct ? updatedProduct : 'Cannot update product'
+        mes: updatedProduct ? 'Updated' : 'Cannot update product'
     })
 })
 
