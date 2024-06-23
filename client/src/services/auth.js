@@ -62,7 +62,7 @@ export const apiForgotPassword = async(payload) => {
     try {
         const response = await axios({
             method: 'post',
-            url: '/api/user/forgotpassword',
+            url: `${process.env.REACT_APP_SERVER_URL}api/user/forgotpassword`,
             data: payload
         })
 
@@ -76,7 +76,7 @@ export const apiResetPassword = async(payload) => {
     try {
         const response = await axios({
             method: 'post',
-            url: '/api/user/resetpassword',
+            url: `${process.env.REACT_APP_SERVER_URL}api/user/resetpassword`,
             data: payload
         })
 

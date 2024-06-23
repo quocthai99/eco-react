@@ -71,6 +71,19 @@ export const apiUpdateUser = async(data, id) => {
     }
 } 
 
+export const apiUpdateCurrent = async(data) => {
+    try {
+        const response = await axiosConfig({
+            method: 'put',
+            url: `/api/user/current`,
+            data
+        })
+        return response
+    } catch (error) {
+        return error
+    }
+} 
+
 export const apiDeleteUser = async(uid) => {
     try {
         const response = await axiosConfig({

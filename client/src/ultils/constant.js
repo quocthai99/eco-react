@@ -146,6 +146,37 @@ export const adminSidebar = [
   },
 ];
 
+export const memberSidebar = [
+  {
+    id: 1,
+    type: "single",
+    text: "Personal",
+    path: `/${path.MEMBER}/${path.PERSONAL}`,
+    icon: <AiOutlineDashboard />,
+  },
+  {
+    id: 2,
+    type: "single",
+    text: "My cart",
+    path: `/${path.MEMBER}/${path.CART}`,
+    icon: <MdGroup />,
+  },
+  {
+    id: 3,
+    type: "single",
+    text: "History",
+    path: `/${path.MEMBER}/${path.HISTORY}`,
+    icon: <AiOutlineDashboard />,
+  },
+  {
+    id: 4,
+    type: "single",
+    text: "Wishlist",
+    path: `/${path.MEMBER}/${path.WISHLIST}`,
+    icon: <AiOutlineLogout />,
+  },
+];
+
 export const blockStatus = [
   {
     code: true,

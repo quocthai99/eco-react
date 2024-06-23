@@ -29,6 +29,9 @@ var userSchema = new mongoose.Schema({
         type:String,
         default:'user',
     },
+    avatar:{
+        type:String,
+    },
     cart:{
         type:Array,
         default:[],

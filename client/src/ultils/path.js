@@ -22,5 +22,9 @@ export const path = {
 
     //MEMBER
     MEMBER: 'member',
-    PERSONAL: 'personal'
+    PERSONAL: 'personal',
+    CART: 'cart',
+    HISTORY: 'history',
+    WISHLIST: 'wishlist',
+
 }

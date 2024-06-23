@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import {path} from './ultils/path'
 import { Home, Login, Public, FinalRegister, ResetPassword, DetailProduct, Products } from './pages/public';
 import { AdminLayout, CreateProduct, DashBoard, ManageOrther, ManageProducts, ManageUsers } from './pages/admin'
-import { MemberLayout, Personal } from './pages/private'
+import { Cart, History, MemberLayout, Personal, Wishlist } from './pages/private'
 import { getCategoriesError, getCategoriesStart, getCategoriesSuccess } from './redux/category/categorySlice';
 import { apiGetCategories } from './services/category';
 
@@ -53,6 +53,9 @@ function App() {
 
         <Route path={path.MEMBER} element={<MemberLayout />}>
           <Route path={path.PERSONAL} element={<Personal />} />
+          <Route path={path.CART} element={<Cart />} />
+          <Route path={path.HISTORY} element={<History />} />
+          <Route path={path.WISHLIST} element={<Wishlist />} />
         </Route>
       </Routes>
 

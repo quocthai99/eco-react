@@ -249,11 +249,13 @@ export const deleteUser = asyncHandler(async(req, res) => {
 
 export const updateUser = asyncHandler(async(req, res) => {
     const { _id } = req.user
+    if (req.file) req.body.avatar = req.file.path
     if ( !_id || Object.keys(req.body).length === 0 ) throw new Error('Missing input')
     const response = await User.findByIdAndUpdate(_id, req.body, { new: true }).select('-password -refreshToken')
     return res.status(200).json({
         success: response ? true : false,
-        updatedUser: response ? response : 'No update user'
+        updatedUser: response ? response : 'No update user',
+        mes: response ? 'Updated' : 'Cannot update'
     })
 })
 
