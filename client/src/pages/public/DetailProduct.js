@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import DOMPurify from 'dompurify';
@@ -20,8 +20,11 @@ const DetailProduct = () => {
   const [product, setProduct] = useState(null);
   const [products, setProducts] = useState(null)
   const [quantity, setQuantity] = useState(null)
+  const [activeVarriant, setActiveVarriant] = useState(null)
   const { showModal } = useSelector(state => state.app.displayModalVote)
 
+  console.log(product)
+  console.log(activeVarriant)
   const fetchDetailProduct = async () => {
     const response = await apiDetailProduct(id);
     if (response?.data.success) {
@@ -67,6 +70,16 @@ const DetailProduct = () => {
     dispatch(displayVoteSuccess({showModal: true, modalChildren: <Vote pid={id} />}))
   }
 
+  const handleActiveVarriant = (vid) => {
+    const idVarriant = product.varriants.find(varr => varr._id === vid)
+    console.log({idVarriant, vid})
+    if(product._id === vid) {
+      setActiveVarriant(product)
+    } else if (idVarriant._id === vid ) {
+      setActiveVarriant(idVarriant)
+    }
+  }
+  
   return (
     <div>
     {/* Breadcrum */}
@@ -85,7 +98,7 @@ const DetailProduct = () => {
         <div className="flex gap-10 mb-[30px]" >
           <div className="flex flex-col gap-10" >
             <img 
-              src={product?.images[0]}
+              src={product?.thumb}
               alt=""
               className="w-[457px] h-[457px] object-contain border p-4"
             />
@@ -113,7 +126,31 @@ const DetailProduct = () => {
                   {product?.description.length > 1 && product?.description.map((el, i) =>  <li key={i}>{el}</li> )}
                   {product?.description.length === 1 && <div className="line-clamp-[10]" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(product?.description[0])}} ></div>}
                 </ul>
-
+{/* Color */}
+                <div className="flex items-center gap-10 my-5">
+                  <h4>Color</h4>
+                  <div className="max-w-20 flex gap-2">
+                    <div>
+                      <h4 
+                        onClick={() => handleActiveVarriant(product._id)}
+                        className={`${ product?._id ? 'p-4 border border-main text-main text-xl cursor-pointer' : 'p-4 border text-xl cursor-pointer'}`}
+                      >
+                        {product?.color}
+                      </h4>
+                    </div>
+                    {product?.varriants.map(el => (
+                      <div key={el._id}>
+                        <h4 
+                          onClick={() => handleActiveVarriant(el._id)}
+                          className={`${ activeVarriant  && activeVarriant._id === el._id ? 'p-4 border border-main text-main text-xl cursor-pointer' : 'p-4 border text-xl cursor-pointer'}`}
+                        >
+                          {el?.color}
+                        </h4>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+{/* Quantity */}
                 <div className="flex items-center gap-4 my-4" >
                   <span className="font-semibold">Quantity</span>
                   <div className='flex items-center' >

@@ -10,7 +10,7 @@ import {
   AiOutlineDashboard,
 } from "react-icons/ai";
 import { IoMdMenu, IoIosArrowForward,IoIosArrowDown } from "react-icons/io";
-import { BsFillSuitHeartFill } from "react-icons/bs";
+import { BsFillSuitHeartFill, BsCartPlus, BsCartCheck } from "react-icons/bs";
 import {
   FaAngleDown,
   FaPinterest,
@@ -62,5 +62,7 @@ export const icons = {
   FaChevronRight,
   IoIosArrowDown,
   AiOutlineUser,
-  AiOutlineDashboard
+  AiOutlineDashboard,
+  BsCartPlus, 
+  BsCartCheck
 };

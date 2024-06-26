@@ -8,7 +8,7 @@ const ModalVote = ({ children }) => {
   return (
     <div
         onClick={() => dispatch(displayVoteSuccess({showModal: false, modalChildren: null}))}
-        className='absolute inset-0 bg-overlay z-10 flex items-center justify-center'
+        className='fixed inset-0 flex items-center justify-center bg-overlay z-20'
     >
         {children}
     </div>

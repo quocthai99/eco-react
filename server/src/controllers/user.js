@@ -6,6 +6,7 @@ import makeToken from 'uniqid'
 
 import { generateAccessToken, generateRefreshToken } from '../middlewares/jwt'
 import sendMail from '../ultils/sendMail'
+import { populate } from '../models/product'
 
 // export const register = asyncHandler(async(req, res) => {
 //     const { email, password, firstname, lastname } = req.body
@@ -113,7 +114,13 @@ export const login = asyncHandler(async (req, res) => {
 
 export const getCurrent = asyncHandler(async(req, res) => {
     const { _id } = req.user
-    const user = await User.findById(_id).select('-refreshToken')
+    const user = await User.findById(_id).select('-refreshToken -password').populate({
+        path: 'cart',
+        populate: {
+            path: 'product',
+            select: 'title thumb price'
+        }
+    })
     return res.status(200).json({
         success: user ? true : false,
         user: user ? user : 'User not found'
@@ -238,7 +245,6 @@ export const getUsers = asyncHandler(async(req, res) => {
 
 export const deleteUser = asyncHandler(async(req, res) => {
     const { uid } = req.params
-    console.log(uid)
     if ( !uid ) throw new Error('Missing input')
     const response = await User.findByIdAndDelete(uid)
     return res.status(200).json({
@@ -266,5 +272,46 @@ export const updateUserByAdmin = asyncHandler(async(req, res) => {
     return res.status(200).json({
         success: response ? true : false,
         updatedUser: response ? response : 'No update user'
+    })
+})
+
+export const updateCart = asyncHandler(async(req, res) => {
+    const { _id } = req.user
+    const { pid, quantity, color } = req.body
+    if(!pid ) throw new Error('Missing input')
+    const user = await User.findById(_id).select('cart')
+    const alreadyProduct = user?.cart.find(el => el.product.toString() === pid)
+    if(alreadyProduct) {
+        const response = await User.updateOne({ cart: { $elemMatch: alreadyProduct }}, { $set: { "cart.$.quantity": quantity,  "cart.$.color": color }}, { new: true })
+        return res.status(200).json({
+            success: response ? true : false,
+            mes: response ? 'Updated' : 'Cannot updated'
+        })
+    } else {
+        const response = await User.findByIdAndUpdate(_id, { $push: { cart: { product: pid, quantity, color }}}, { new: true })
+        return res.status(200).json({
+            success: response ? true : false,
+            mes: response ? 'Updated your cart' : 'Cannot updated',
+            updatedCart: response ? response : 'No update user'
+        })
+    }
+})
+
+export const removeProductCart = asyncHandler(async(req, res) => {
+    const { _id } = req.user
+    const { pid } = req.params
+    const user = await User.findById(_id).select('cart')
+    console.log('=>', user)
+    console.log(pid)
+    const alreadyProduct = user?.cart.find(el => el.product.toString() === pid)
+    console.log(alreadyProduct)
+    if(!alreadyProduct) return res.status(200).json({
+        success: true,
+        mes: 'your cart is empty'
+    })
+    const response = await User.findByIdAndUpdate(_id, { $pull: { cart: { product: pid }}}, { new: true })
+    return res.status(200).json({
+        success: response ? true : false,
+        mes: response ? 'deleted your cart' : 'Cannot deleted'
     })
 })

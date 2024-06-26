@@ -42,6 +42,7 @@ const Personal = () => {
       mobile: user.mobile,
       avatar: user.avatar
     })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
   return (

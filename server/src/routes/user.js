@@ -13,11 +13,14 @@ router.post('/login', userControllers.login)
 router.get('/current',verifyAccessToken, userControllers.getCurrent)
 router.post('/refreshToken', userControllers.refreshAccessToken)
 router.get('/logout', userControllers.logout)
+router.put('/cart',verifyAccessToken, userControllers.updateCart)
 router.post('/forgotpassword', userControllers.forgotPassword)
 router.post('/resetpassword', userControllers.resetPassword)
 router.get('/',verifyAccessToken, isAdmin, userControllers.getUsers)
 router.delete('/:uid',verifyAccessToken, isAdmin, userControllers.deleteUser)
 router.put('/:uid',verifyAccessToken, isAdmin, userControllers.updateUserByAdmin)
+router.delete('/remove-cart/:pid',verifyAccessToken, userControllers.removeProductCart)
+
 
 
 

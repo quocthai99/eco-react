@@ -4,6 +4,7 @@ import { formatMoney } from '../../ultils/helpers'
 import { useDebounce } from '../../hook'
 import { Pagination } from '../../components'
 import UpdateProduct from './UpdateProduct'
+import {Varriant} from '../private'
 
 const ManageProducts = () => {
   const [products, setProducts] = useState(null)
@@ -11,6 +12,7 @@ const ManageProducts = () => {
   const [query, setQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [isEdit, setIsEdit] = useState(null)
+  const [isVarriant, setIsVarriant] = useState(null)
 
   const fetchGetProducts = async (params) => {
     const response = await apiGetProducts(params)
@@ -37,6 +39,7 @@ const ManageProducts = () => {
   return (
     <div className='relative'>
       {isEdit && <UpdateProduct product={isEdit} setIsEdit={setIsEdit} />}
+      {isVarriant && <Varriant product={isVarriant} setIsVarriant={setIsVarriant} />}
       <h1 className="h-[75px] flex justify-between items-center text-3xl font-bold px-4 border-b ">
           <span>Manage Product</span>
       </h1>
@@ -87,7 +90,7 @@ const ManageProducts = () => {
                       <td>{product.totalRatings}</td>
                       <td className="flex flex-col gap-2">
                         <div onClick={() => setIsEdit(product)} className='hover:text-main cursor-pointer'>Edit</div>
-                        <div className='hover:text-main cursor-pointer'>Variants</div>
+                        <div onClick={() => setIsVarriant(product)} className='hover:text-main cursor-pointer'>Variants</div>
                         <div className='hover:text-main cursor-pointer' onClick={() => handleDeleteProduct(product._id)}>Delete</div>
                       </td>
                     </tr>

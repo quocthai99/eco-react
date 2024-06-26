@@ -11,6 +11,7 @@ import { apiLogout } from '../services/auth'
 
 import { icons } from '../ultils/icons'
 import { path } from '../ultils/path'
+import { showCart } from '../redux/app/appSlice'
 
 const { AiOutlineLogout, CiMoneyBill, FaAngleDown, FaPinterest, FaFacebookF, FaTwitter, FaInstagram, FaGoogle, FaPhoneAlt, FaShoppingCart, MdEmail, CiHeart, AiOutlineUser } = icons
 
@@ -130,8 +131,8 @@ const Header = () => {
                                 </div>
                                 <div className='pt-[10px] pl-5 flex items-center gap-2' >
                                     <FaShoppingCart size={24} color='#ee3131' className='mr-1' />
-                                    <div className='flex gap-1 items-center hover:text-main cursor-pointer' >
-                                        <span>0</span>
+                                    <div onClick={() => dispatch(showCart())} className='flex gap-1 items-center hover:text-main cursor-pointer' >
+                                        <span>{user?.cart.length || 0}</span>
                                         <span>Item</span>
                                     </div>
                                 </div>

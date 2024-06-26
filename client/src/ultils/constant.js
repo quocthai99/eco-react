@@ -175,6 +175,13 @@ export const memberSidebar = [
     path: `/${path.MEMBER}/${path.WISHLIST}`,
     icon: <AiOutlineLogout />,
   },
+  {
+    id: 5,
+    type: "single",
+    text: "Back to home",
+    path: `/${path.HOME}`,
+    icon: <AiOutlineLogout />,
+  },
 ];
 
 export const blockStatus = [

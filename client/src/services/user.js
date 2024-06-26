@@ -95,3 +95,28 @@ export const apiDeleteUser = async(uid) => {
         return error
     }
 } 
+
+export const apiUpdateCart = async(data) => {
+    try {
+        const response = await axiosConfig({
+            method: 'put',
+            url: `/api/user/cart`,
+            data
+        })
+        return response
+    } catch (error) {
+        return error
+    }
+}
+
+export const apiRemoveCart = async(pid) => {
+    try {
+        const response = await axiosConfig({
+            method: 'delete',
+            url: `/api/user/remove-cart/${pid}`,
+        })
+        return response
+    } catch (error) {
+        return error
+    }
+}

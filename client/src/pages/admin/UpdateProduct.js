@@ -61,7 +61,7 @@ const UpdateProduct = ({ product, setIsEdit }) => {
     }
 
     useEffect(() => {
-       if ( watch('thumb')instanceof FileList && watch('images').length > 0) {
+       if ( watch('thumb')instanceof FileList && watch('thumb').length > 0) {
            handlePreviewThumb(watch('thumb')[0])
        }
     // eslint-disable-next-line react-hooks/exhaustive-deps

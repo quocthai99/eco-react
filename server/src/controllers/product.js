@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import slugify from 'slugify'
+import makeToken from 'uniqid'
 
 const Product = require('../models/product')
 
@@ -130,6 +131,23 @@ export const ratings = asyncHandler(async(req, res) => {
     return res.status(200).json({
         success: true,
         updatedProduct
+    })
+})
+
+export const addVarriant = asyncHandler(async(req, res) => {
+    const { pid } = req.params
+    const { title, price, color } = req.body
+    const thumb = req.files.thumb[0].path
+    const images = req.files.images.map(img => img.path)
+    if(thumb) req.body.thumb = thumb
+    if(images) req.body.images = images
+    if (!title && !price && !color ) throw new Error('Missing input')
+    
+    const response = await Product.findByIdAndUpdate(pid, { $push: { varriants: { color, price, title, thumb, images } }})
+    return res.status(200).json({
+        success: response ? true : false,
+        mes: response ? 'Added varriant' : 'Cannot Add varriant',
+        varriants: response ? response : 'Failed add'
     })
 })
 

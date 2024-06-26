@@ -82,3 +82,17 @@ export const apiUpdateProduct = async(data, pid) => {
         return error
     }
 }
+
+export const apiAddVarriant = async(data, pid) => {
+    try {
+        const response = await axiosConfig({
+            method: 'put',
+            url: `/api/product/varriant/${pid}`,
+            data
+        })
+
+        return response
+    } catch (error) {
+        return error
+    }
+}
